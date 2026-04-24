@@ -38,8 +38,8 @@ async function run() {
   while (true){
   testVal += 10;
   testVal = testVal % 255;
-  element.style.setProperty('background-color', `rgb(${testVal},75,75)`);
-  await wait(1); 
+  element.style.setProperty('background-color', `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})`);
+  await wait(100); 
   }
 }
 </script>
