@@ -5,8 +5,41 @@
 </head>
 <body>
 
+<div id = "test", class="portfolioElement", broder="12px">
+<img src = "https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo_-_pink_color_version.svg">
+</div>
+
 <h1>This is a Heading</h1>
 <p>This is a paragraph.</p>
 
 </body>
 </html>
+
+
+
+
+
+<style>
+body {background-color: rgb(0,75,75);}
+h1   {color: blue;}
+p    {color: red;}
+</style>
+
+
+
+<script>
+var testVal = 0;
+const element = document.getElementById("test");
+
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+run();
+
+async function run() {
+  while (true){
+  testVal += 10;
+  testVal = testVal % 255;
+  element.style.setProperty('background-color', `rgb(${testVal},75,75)`);
+  await wait(1); 
+  }
+}
+</script>
