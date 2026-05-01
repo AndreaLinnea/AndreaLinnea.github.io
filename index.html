@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Press+Start+2P&display=swap" rel="stylesheet">
+
 <title>Page Title</title>
 </head>
 <body>
@@ -10,11 +14,18 @@
 
 
 <div class="Bio">
-<img src = "Assets/Images/headshot.png">
+
+<img src = "https://media.discordapp.net/attachments/1339824812264259697/1494802938206355698/image.png?ex=69f5bb78&is=69f469f8&hm=46b613c1f0d3bad124403159b78132a2ce93e20eec0e3909dc28b8876500a837&=&format=webp&quality=lossless&width=575&height=839">
+<div style = "  display: flex; width: 100%;flex-direction: column; gap: 10px;align-items: center;background-color: rgb(245,220,245);">
+<h1>
+Andrea Linnea
+</h1>
 <p>
     Desired position (job)<br><br>
     Short summary of experience and/or job interests
 </p>
+</div>
+
 </div>
 
 <div class="portfolioElement">
@@ -44,19 +55,32 @@
 
 
 <style>
-body {background-color: rgb(0,75,75);}
-h1   {color: blue;}/*do stuff here like font that applies to everything*/
-p    {color: red;} 
+body {background-color: rgb(245,240,210);}
+h1   {color: blue; font-family: "Press Start 2P"}/*do stuff here like font that applies to everything*/
+p    {color: red; font-family: "Montserrat"} 
+img{width:35%;  display: inline;justify-content: left;}
 
-.portfolioElement, .Bio {
+
+.Bio {
+  border: 10px outset rgb(255,75,75);
+  padding: 0%;
+  display: flex;
+  justify-content: left;
+  align-items: top;
+  width: 80%;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.portfolioElement{
   border: 10px outset rgb(255,75,75);
   padding: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 70%;
+  width: 50%;
   margin: auto;
-  margin-top: 200px;
+  margin-top: 50px;
 }
 
 </style>
