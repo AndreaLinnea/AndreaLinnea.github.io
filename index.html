@@ -16,13 +16,15 @@
 <div class="Bio">
 
 <img src = "https://media.discordapp.net/attachments/1339824812264259697/1494802938206355698/image.png?ex=69f5bb78&is=69f469f8&hm=46b613c1f0d3bad124403159b78132a2ce93e20eec0e3909dc28b8876500a837&=&format=webp&quality=lossless&width=575&height=839">
-<div style = "  display: flex; width: 100%;flex-direction: column; gap: 10px;align-items: center;background-color: rgb(245,220,245);">
+<div style = "  display: flex; width: 100%;flex-direction: column; gap: 10px;align-items: center;">
 <h1 style = "margin: 5%">
 Andrea Linnea
 </h1>
 <p style = "margin: 10%">
-    Game Designer and Programmer<br><br>
-Worked on many projects with team sizes ranging from one to seventeen. Primariliy a systems designer and programmer, and have also worked in roles for level design and narrative design. I have been and am comfortable in leadership positions such as lead design and product owner, but am just as proficient adapting to any project setting.
+	<b>
+    	Game Designer and Programmer<br><br>
+	Worked on many projects with team sizes ranging from one to seventeen. Primariliy a systems designer and programmer, and have also worked in roles for level design and narrative design. I have been, and am comfortable in leadership positions such as lead design and product owner, but am just as proficient adapting to any project setting.
+    </b>
 </p>
 </div>
 
@@ -30,18 +32,32 @@ Worked on many projects with team sizes ranging from one to seventeen. Primarili
 
 <div class="portfolioElement">
 <img src = "https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo_-_pink_color_version.svg">
-<p>
-    Description of project<br><br>
-    Explanation of role and contributions you have done on the project<br><br>
-    Breakdown of a mechanic and explain why you did it like this<br><br>
-    Visual support (video, screenshot, gif, etc.) <br><br>
-    Link to project<br><br>
-
+<div style = "  display: flex; width: 100%;flex-direction: column; gap: 10px;align-items: center;">
+<h1 style = "margin: 5%">
+Flight
+</h1>
+<p style = "margin: 5%">
+A freeing movement sandbox where you take control of a bird by moving each wing individually.
+<br><br>
+Movement and Physics Programming:<br>
+Combines the input of two joysticks to determine which direction you are turning, up down left right, along with finely tuned movement functions that allows players to trade height for velocity and vice versa. All intentionally crafted to meet the pillars of freedom and mastery of movement.
 </p>
+</div>
 </div>
 
 <div class="portfolioElement">
 <img src = "https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo_-_pink_color_version.svg">
+<div style = "  display: flex; width: 100%;flex-direction: column; gap: 10px;align-items: center;">
+<h1 style = "margin: 5%">
+Grav!ty Blitz
+</h1>
+<p style = "margin: 5%">
+A single-input high skill ceiling, low skill floor speedrunning game with a live updating global leaderboard and a competitive spirit.
+<br><br>
+Replay System:<br>
+Saves your inputs to a file to watch back or race against. Core to the pillars of player skill development, it allows players to iteratively improve by reviewing both themselves and other players via integration with the leaderboard system. 
+</p>
+</div>
 </div>
 
 <h1>This is a Heading</h1>
@@ -62,6 +78,7 @@ img{width:35%;  display: inline;justify-content: left;}
 
 
 .Bio {
+  background-color: rgb(255,180,180);
   border: 10px outset rgb(255,75,75);
   padding: 0%;
   display: flex;
@@ -73,11 +90,12 @@ img{width:35%;  display: inline;justify-content: left;}
 }
 
 .portfolioElement{
+  background-color: rgb(225,225,225);
   border: 10px outset rgb(255,75,75);
-  padding: 5%;
+  padding: 0%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: top;
   width: 50%;
   margin: auto;
   margin-top: 50px;
@@ -92,7 +110,7 @@ var testVal = 0;
 const portfolioElmnts = document.getElementsByClassName("portfolioElement");
 
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-run();
+//run();
 
 async function run() {
   while (true){
@@ -107,3 +125,18 @@ async function run() {
   }
 }
 </script>
+
+
+
+<!-- 
+Description of project // DONE
+
+Explanation of role and contributions you have done on the project // DONE
+
+Breakdown of a mechanic and explain why you did it like this // DONE
+
+Visual support (video, screenshot, gif, etc.) // PENDING
+
+Link to project
+
+-->
