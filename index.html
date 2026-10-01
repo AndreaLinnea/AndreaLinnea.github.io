@@ -70,8 +70,7 @@
 </div>
 
 
-	<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/wffBD2?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
-
+    <canvas id="backgroundCanvas" width="500px" height="500px" style="border:1px solid black;display: block; width: 100%;">		</canvas>
 	
 <div class="portfolioElement">
 	<img src = "Assets/Images/flight.gif">
@@ -199,6 +198,59 @@ async function run() {
   await wait(100); 
   }
 }
+
+function doVoronoi(){
+
+	const canvas = document.getElementById("backgroundCanvas");
+	const ctx = canvas.getContext("2d");
+	const width = canvas.width;
+	const height = canvas.height;
+	const imageData = ctx.createImageData(width, height);
+	const data = imageData.data; 
+	
+	// generate random points
+	const points = [];
+	const numPoints = 50;
+	for (let i = 0; i < numPoints; i++){
+		const newPoint = [Math.random() * width, Math.random() * height];
+		points.push(newPoint);
+	}
+	
+	// go through ever pixel in the canvas
+	for (let y = 0; y < height; y++) {
+	    for (let x = 0; x < width; x++) {
+	
+	//calculate distance to nearest point
+	        var minDist = width + height;
+	        for (let i = 0; i < points.length; i++)
+	        {
+	        	const distVector = [x - points[i][0],y - points[i][1]];
+	            const dist = Math.sqrt(
+	            	distVector[0] * distVector[0] +
+	                distVector[1] * distVector[1]
+	            );
+	            
+	            if(minDist > dist){minDist = dist;}
+	        }
+	        
+	        // output that as a pixel shade
+	        const r =  minDist;
+	        const g = minDist;
+	        const b = minDist;
+	        const a = 255;
+	
+	        const index = (y * width + x) * 4;
+	        data[index]     = r;
+	        data[index + 1] = g; 
+	        data[index + 2] = b; 
+	        data[index + 3] = a; 
+	    }
+	}
+	
+	
+	ctx.putImageData(imageData, 0, 0);
+}
+	
 </script>
 
 
