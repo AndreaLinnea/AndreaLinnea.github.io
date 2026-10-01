@@ -195,7 +195,7 @@ async function run() {
 	  for(var i = 0; i < portfolioElmnts.length; i++){
 	  	portfolioElmnts[i].style.setProperty('background-color', `rgb(${Math.random() * 50},${Math.random() * 50},${Math.random() * 50})`);
 	  }
-		moveVoronoi(10);
+		moveVoronoi(0.1);
 	  updateVoronoi();
 	  lastFrameTime = performance.now();
 	  await wait(10); 
@@ -262,8 +262,8 @@ async function run() {
     {
     	const getRand = mulberry32(1);
     	for (let i = 0; i < points.length; i++){
-			points[i][0] = ((getRand()*2-1)* frameDelta * 1000 * speed + points[i][0]) % width;
-            points[i][1] = ((getRand()*2-1)*  frameDelta * 1000 * speed + points[i][1]) % height;
+			points[i][0] = ((getRand()*2-1)* frameDelta * speed + points[i][0]) % width;
+            points[i][1] = ((getRand()*2-1)*  frameDelta * speed + points[i][1]) % height;
       	}
     }
 
