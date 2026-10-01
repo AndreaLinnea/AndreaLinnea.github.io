@@ -183,10 +183,13 @@ position: absolute;
 var testVal = 0;
 const portfolioElmnts = document.getElementsByClassName("portfolioElement");
 
+var lastFrameTime = 0;
+var frameDelta;
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function run() {
   while (true){
+	  frameDelta = performance.now() - lastFrameTime;
 	  testVal += 10;
 	  testVal = testVal % 255;
 	  for(var i = 0; i < portfolioElmnts.length; i++){
@@ -194,7 +197,8 @@ async function run() {
 	  }
 		moveVoronoi(10);
 	  updateVoronoi();
-	  await wait(100); 
+	  lastFrameTime = performance.now();
+	  await wait(10); 
   }
 }
 
@@ -208,7 +212,7 @@ async function run() {
 	
 	// generate random points
 	const points = [];
-	const numPoints = 50;
+	const numPoints = 10;
 	for (let i = 0; i < numPoints; i++){
 		const newPoint = [Math.random() * width, Math.random() * height];
 		points.push(newPoint);
@@ -238,6 +242,9 @@ async function run() {
 	        const g = minDist;
 	        const b = minDist;
 	        const a = 255;
+
+			if(minDist <3){r=255;}
+
 	
 	        const index = (y * width + x) * 4;
 	        data[index]     = r;
@@ -255,8 +262,8 @@ async function run() {
     {
     	const getRand = mulberry32(1);
     	for (let i = 0; i < points.length; i++){
-			points[i][0] = ((getRand()*2-1)* speed + points[i][0]) % width;
-            points[i][1] = ((getRand()*2-1)* speed + points[i][1]) % height;
+			points[i][0] = ((getRand()*2-1)* frameDelta * 1000 * speed + points[i][0]) % width;
+            points[i][1] = ((getRand()*2-1)*  frameDelta * 1000 * speed + points[i][1]) % height;
       	}
     }
 
