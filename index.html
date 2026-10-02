@@ -195,7 +195,7 @@ async function run() {
 	  for(var i = 0; i < portfolioElmnts.length; i++){
 	  	portfolioElmnts[i].style.setProperty('background-color', `rgb(${Math.random() * 50},${Math.random() * 50},${Math.random() * 50})`);
 	  }
-		moveVoronoi(0.1);
+		moveVoronoi(1);
 	  updateVoronoi();
 	  lastFrameTime = performance.now();
 	  await wait(10); 
@@ -212,7 +212,7 @@ async function run() {
 	
 	// generate random points
 	const points = [];
-	const numPoints = 10;
+	const numPoints = 20;
 	for (let i = 0; i < numPoints; i++){
 		const newPoint = [Math.random() * width, Math.random() * height];
 		points.push(newPoint);
@@ -243,7 +243,7 @@ async function run() {
 	        var b = minDist;
 	        var a = 255;
 
-			if(minDist <3){r=255;}
+			if(minDist <2){r=255;}
 
 	
 	        const index = (y * width + x) * 4;
