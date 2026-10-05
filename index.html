@@ -70,7 +70,7 @@
 </div>
 
 
-    <canvas id="backgroundCanvas" width="500px" height="500px" style="border:1px solid black;display: block; width: 100%;">		</canvas>
+    <canvas id="backgroundCanvas" width="500vw " height="300vh" style="display: block; z-index: -1; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; ">		</canvas>
 	
 <div class="portfolioElement">
 	<img src = "Assets/Images/flight.gif">
@@ -185,6 +185,9 @@ const portfolioElmnts = document.getElementsByClassName("portfolioElement");
 
 var lastFrameTime = 0;
 var frameDelta;
+var canvasMouseX = 0;
+var canvasMouseY = 0;
+
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function run() {
@@ -195,7 +198,7 @@ async function run() {
 	  for(var i = 0; i < portfolioElmnts.length; i++){
 	  	portfolioElmnts[i].style.setProperty('background-color', `rgb(${Math.random() * 50},${Math.random() * 50},${Math.random() * 50})`);
 	  }
-		moveVoronoi(1);
+		moveVoronoi(0.1);
 	  updateVoronoi();
 	  lastFrameTime = performance.now();
 	  await wait(10); 
@@ -204,21 +207,40 @@ async function run() {
 
 
 	const canvas = document.getElementById("backgroundCanvas");
-	const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
 	const width = canvas.width;
 	const height = canvas.height;
 	const imageData = ctx.createImageData(width, height);
 	const data = imageData.data; 
-	
+
+	const pxVoronoiOverflow = 180;
+	const voronoiShadeBase = -20;
+	const voronoiPulseSpeed = 1;
+	const voronoiPulseStrength = .5;
+	const voronoiShadeFalloffRate = 3;
+	const voronoiShadeFalloffCurve = 1.2;
+
+
+
 	// generate random points
 	const points = [];
-	const numPoints = 20;
+	const numPoints = 30;
 	for (let i = 0; i < numPoints; i++){
-		const newPoint = [Math.random() * width, Math.random() * height];
+        const newPoint = [Math.random() * (width + 2 * pxVoronoiOverflow) - pxVoronoiOverflow, Math.random() * (height + 2 * pxVoronoiOverflow) - pxVoronoiOverflow];
 		points.push(newPoint);
 	}
-	
+
+	document.addEventListener('mousemove', (event) => {// get mouse positoin so it can interact
+		const rect = canvas.getBoundingClientRect();
+
+		 canvasMouseX = Math.floor(((event.clientX - rect.left) / rect.width) * canvas.width);
+		canvasMouseY = Math.floor(((event.clientY - rect.top) / rect.height) * canvas.height);
+		 console.log("mouseXY: " + canvasMouseX + ", " + canvasMouseY)
+	});
+
 	function updateVoronoi(){
+		
+
 
 	// go through ever pixel in the canvas
 	for (let y = 0; y < height; y++) {
@@ -236,14 +258,25 @@ async function run() {
 	            
 	            if(minDist > dist){minDist = dist;}
 	        }
-	        
-	        // output that as a pixel shade
-	        var r =  minDist;
-	        var g = minDist;
-	        var b = minDist;
+
+			// see if mouse is closer
+            const distVector = [x - canvasMouseX, y - canvasMouseY];
+            const dist = Math.sqrt(
+                distVector[0] * distVector[0] +
+                distVector[1] * distVector[1]
+            );
+
+            if (minDist > dist) { minDist = dist; }
+
+			// output that as a pixel shade
+            const shade = Math.pow(minDist / (voronoiShadeFalloffRate + voronoiPulseStrength * Math.sin(voronoiPulseSpeed * performance.now() / 1000)), voronoiShadeFalloffCurve) + voronoiShadeBase
+
+            var r = shade;
+            var g = shade;
+            var b = shade;
 	        var a = 255;
 
-			if(minDist <2){r=255;}
+			//if(minDist <1){r=255;}
 
 	
 	        const index = (y * width + x) * 4;
@@ -262,8 +295,8 @@ async function run() {
     {
     	const getRand = mulberry32(1);
     	for (let i = 0; i < points.length; i++){
-			points[i][0] = (((getRand()*2-1) * frameDelta * speed + points[i][0]) + width) % width;
-            points[i][1] = (((getRand()*2-1) * frameDelta * speed + points[i][1]) + height) % height;
+            points[i][0] = ((((getRand() * 2 - 1) * frameDelta * speed + points[i][0]) + (width + 3 * pxVoronoiOverflow)) % (width + 2 * pxVoronoiOverflow)) - pxVoronoiOverflow;
+            points[i][1] = ((((getRand() * 2 - 1) * frameDelta * speed + points[i][1]) + (height + 3 * pxVoronoiOverflow)) % (height + 2 * pxVoronoiOverflow)) - pxVoronoiOverflow;
       	}
     }
 
