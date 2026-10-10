@@ -12,12 +12,12 @@
 
 
 <div class = "horizontalElement">
-	<img src = "Assets/Images/header.jpg" style = "scale:500%;object-fit: cover;margin: 10% 25% 10% 0%;">
+	<img src = "Assets/Images/header.jpg"  style = "scale:500%;object-fit: cover;margin: 10% 25% 10% 0%;filter: grayscale(0%);">
 </div>
 
 
-<div class = "horizontalElement" style = "border: 10px outset rgb(255,75,75)">
-	<h1 style = "margin: 7% 0%;font-size: 4.8vw;-webkit-text-stroke: 2px black;">
+<div class = "horizontalElement" style = "border: 10px outset rgb(75,75,75)">
+	<h1 style = "margin: 7% 0%;font-size: 4.8vw;-webkit-text-stroke: 2px black; color: rgb(255,75,75)">
 		Andrea Linnea
 	</h1>
 	<p style = "margin: 10% 0%;font-size: 2.05vw;position: absolute;">
@@ -143,12 +143,12 @@ position: absolute;
 }
 	
 .horizontalElement {
-  background-color: rgb(255,180,180);
+  background-color: rgb(200,200,200);
   display: flex;
   justify-content: 
   center;overflow: hidden; 
   aspect-ratio: 4 / 1;
-    margin: 2% 15%;
+    margin: 2% 20%;
 }
 
 .Bio {
@@ -219,7 +219,7 @@ async function run() {
 	const voronoiPulseStrength = .5;
 	const voronoiShadeFalloffRate = 3;
 	const voronoiShadeFalloffCurve = 1.2;
-
+	const centerBlockWidth = 50;
 
 
 	// generate random points
@@ -277,7 +277,7 @@ async function run() {
 	        var a = 255;
 
 			//if(minDist <1){r=255;}
-
+			//if(y + (0.5 * canvas.width)
 	
 	        const index = (y * width + x) * 4;
 	        data[index]     = r;
