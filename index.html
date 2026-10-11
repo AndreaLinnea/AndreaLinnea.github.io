@@ -219,7 +219,7 @@ async function run() {
 	const voronoiPulseStrength = .5;
 	const voronoiShadeFalloffRate = 3;
 	const voronoiShadeFalloffCurve = 1.2;
-	const centerBlockWidth = 50;
+	const centerBlockWidth = 350;
 
 
 	// generate random points
@@ -277,7 +277,7 @@ async function run() {
 	        var a = 255;
 
 			//if(minDist <1){r=255;}
-			//if(y + (0.5 * canvas.width)
+            if (x > (0.5 * canvas.width - 0.5 * centerBlockWidth) && x < (0.5 * canvas.width + 0.5 * centerBlockWidth)) { r += 90; g += 40; b += 40; }
 	
 	        const index = (y * width + x) * 4;
 	        data[index]     = r;
