@@ -70,7 +70,7 @@
 </div>
 
 
-    <canvas id="backgroundCanvas" width="500vw " height="300vh" style="display: block; z-index: -1; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; ">		</canvas>
+    <canvas id="backgroundCanvas" width="100vw " height="60vh" style="display: block; z-index: -1; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; image-rendering: pixelated; image-rendering: crisp-edges;">		</canvas>
 	
 <div class="portfolioElement">
 	<img src = "Assets/Images/flight.gif">
@@ -198,7 +198,7 @@ async function run() {
 	  for(var i = 0; i < portfolioElmnts.length; i++){
 	  	portfolioElmnts[i].style.setProperty('background-color', `rgb(${Math.random() * 50},${Math.random() * 50},${Math.random() * 50})`);
 	  }
-		moveVoronoi(0.1);
+		moveVoronoi(0.01);
 	  updateVoronoi();
 	  lastFrameTime = performance.now();
 	  await wait(10); 
@@ -207,20 +207,21 @@ async function run() {
 
 
 	const canvas = document.getElementById("backgroundCanvas");
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+	const ctx = canvas.getContext("2d", { willReadFrequently: true });
 	const width = canvas.width;
 	const height = canvas.height;
 	const imageData = ctx.createImageData(width, height);
 	const data = imageData.data; 
+    ctx.imageSmoothingEnabled = false;
 
-	const pxVoronoiOverflow = 180;
-	const voronoiShadeBase = -20;
+	const pxVoronoiOverflow = 50;
+	const voronoiShadeBase = 0;
 	const voronoiPulseSpeed = 1;
-	const voronoiPulseStrength = .5;
+	const voronoiPulseStrength = .1;
 	const voronoiShadeFalloffRate = 3;
-	const voronoiShadeFalloffCurve = 1.2;
-	const centerBlockWidth = 350;
-
+	const voronoiShadeFalloffCurve = 1.65;
+	const centerBlockWidth = 20;
+	const pixelShadeStepDistance = 6;
 
 	// generate random points
 	const points = [];
@@ -278,7 +279,11 @@ async function run() {
 
 			//if(minDist <1){r=255;}
             if (x > (0.5 * canvas.width - 0.5 * centerBlockWidth) && x < (0.5 * canvas.width + 0.5 * centerBlockWidth)) { r += 90; g += 40; b += 40; }
-	
+
+			r = Math.round(r / pixelShadeStepDistance) * pixelShadeStepDistance;
+            g = Math.round(g / pixelShadeStepDistance) * pixelShadeStepDistance;
+            b = Math.round(b / pixelShadeStepDistance) * pixelShadeStepDistance;
+
 	        const index = (y * width + x) * 4;
 	        data[index]     = r;
 	        data[index + 1] = g; 
