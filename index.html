@@ -70,7 +70,7 @@
 </div>
 
 
-    <canvas id="backgroundCanvas" width="100vw " height="60vh" style="display: block; z-index: -1; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; image-rendering: pixelated; image-rendering: crisp-edges;">		</canvas>
+    <canvas id="backgroundCanvas" width="100vw " height="48vh" style="display: block; z-index: -1; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; image-rendering: pixelated; image-rendering: crisp-edges;">		</canvas>
 	
 <div class="portfolioElement">
 	<img src = "Assets/Images/flight.gif">
@@ -180,62 +180,74 @@ position: absolute;
 
 
 <script>
-var testVal = 0;
-const portfolioElmnts = document.getElementsByClassName("portfolioElement");
 
-var lastFrameTime = 0;
-var frameDelta;
-var canvasMouseX = 0;
-var canvasMouseY = 0;
+	// document variables init
+	const portfolioElmnts = document.getElementsByClassName("portfolioElement");
 
-const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-async function run() {
-  while (true){
-	  frameDelta = performance.now() - lastFrameTime;
-	  testVal += 10;
-	  testVal = testVal % 255;
-	  for(var i = 0; i < portfolioElmnts.length; i++){
-	  	portfolioElmnts[i].style.setProperty('background-color', `rgb(${Math.random() * 50},${Math.random() * 50},${Math.random() * 50})`);
-	  }
-		moveVoronoi(0.01);
-	  updateVoronoi();
-	  lastFrameTime = performance.now();
-	  await wait(10); 
-  }
-}
-
-
-	const canvas = document.getElementById("backgroundCanvas");
-	const ctx = canvas.getContext("2d", { willReadFrequently: true });
-	const width = canvas.width;
-	const height = canvas.height;
-	const imageData = ctx.createImageData(width, height);
-	const data = imageData.data; 
+    const canvas = document.getElementById("backgroundCanvas");
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+    const imageData = ctx.createImageData(canvasWidth, canvasHeight);
+    const data = imageData.data;
     ctx.imageSmoothingEnabled = false;
 
-	const pxVoronoiOverflow = 50;
-	const voronoiShadeBase = 0;
-	const voronoiPulseSpeed = 1;
-	const voronoiPulseStrength = .1;
-	const voronoiShadeFalloffRate = 3;
-	const voronoiShadeFalloffCurve = 1.65;
-	const centerBlockWidth = 20;
-	const pixelShadeStepDistance = 6;
+	// internal variables init
+    const thisRandomSeed = Math.round(Math.random() * 1000);
+	var testVal = 0;
+	var lastFrameTime = 0;
+	var frameDelta;
+	var canvasMouseX = 0;
+	var canvasMouseY = 0;
+
+	// Adjustable variables init
+    const voronoiMoveSpeed = 0.002;
+    const VoronoiPXOverflow = 50;
+    const voronoiShadeBase = -10;
+    const voronoiPulseSpeed = 1;
+    const voronoiPulseStrength = .1;
+    const voronoiShadeFalloffRate = 3.5;
+    const voronoiShadeFalloffCurve = 1.8;
+    const canvasCenterBlockWidth = 70;
+    const canvasPixelShadeStepDistance = 3;
+    const canvasPixelShadeRandomOffsetRange = 5;
+
+	// update loop
+	const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+	async function run() {
+	    while (true){
+			frameDelta = performance.now() - lastFrameTime;
+			testVal += 10;
+			testVal = testVal % 255;
+			for(var i = 0; i < portfolioElmnts.length; i++){
+	  			portfolioElmnts[i].style.setProperty('background-color', `rgb(${Math.random() * 50},${Math.random() * 50},${Math.random() * 50})`);
+			}
+            moveVoronoi(voronoiMoveSpeed);
+			updateVoronoi();
+			lastFrameTime = performance.now();
+			await wait(10); 
+	    }
+	}
+
+
+
+
+
+
 
 	// generate random points
 	const points = [];
 	const numPoints = 30;
 	for (let i = 0; i < numPoints; i++){
-        const newPoint = [Math.random() * (width + 2 * pxVoronoiOverflow) - pxVoronoiOverflow, Math.random() * (height + 2 * pxVoronoiOverflow) - pxVoronoiOverflow];
+        const newPoint = [Math.random() * (canvasWidth + 2 * VoronoiPXOverflow) - VoronoiPXOverflow, Math.random() * (canvasHeight + 2 * VoronoiPXOverflow) - VoronoiPXOverflow];
 		points.push(newPoint);
 	}
 
 	document.addEventListener('mousemove', (event) => {// get mouse positoin so it can interact
 		const rect = canvas.getBoundingClientRect();
 
-		 canvasMouseX = Math.floor(((event.clientX - rect.left) / rect.width) * canvas.width);
-		canvasMouseY = Math.floor(((event.clientY - rect.top) / rect.height) * canvas.height);
+		 canvasMouseX = Math.floor(((event.clientX - rect.left) / rect.width) * canvasWidth);
+        canvasMouseY = Math.floor(((event.clientY - rect.top) / rect.height) * canvasHeight);
 		// console.log("mouseXY: " + canvasMouseX + ", " + canvasMouseY)
 	});
 
@@ -243,12 +255,14 @@ async function run() {
 		
 
 
-	// go through ever pixel in the canvas
-	for (let y = 0; y < height; y++) {
-	    for (let x = 0; x < width; x++) {
+		// go through ever pixel in the canvas
+    const getRand = mulberry32(thisRandomSeed);
+
+        for (let y = 0; y < canvasHeight; y++) {
+        for (let x = 0; x < canvasWidth; x++) {
 	
-	//calculate distance to nearest point
-	        var minDist = width + height;
+            //calculate distance to nearest point
+            var minDist = canvasWidth + canvasHeight;
 	        for (let i = 0; i < points.length; i++)
 	        {
 	        	const distVector = [x - points[i][0],y - points[i][1]];
@@ -270,21 +284,24 @@ async function run() {
             if (minDist > dist) { minDist = dist; }
 
 			// output that as a pixel shade
-            const shade = Math.pow(minDist / (voronoiShadeFalloffRate + voronoiPulseStrength * Math.sin(voronoiPulseSpeed * performance.now() / 1000)), voronoiShadeFalloffCurve) + voronoiShadeBase
+			const shade = Math.pow(minDist / (voronoiShadeFalloffRate + voronoiPulseStrength * Math.sin(voronoiPulseSpeed * performance.now() / 1000)), voronoiShadeFalloffCurve) + voronoiShadeBase
+			var shadeOffset = 0;
 
-            var r = shade;
-            var g = shade;
-            var b = shade;
+            shadeOffset = (getRand() - 0.5) * canvasPixelShadeRandomOffsetRange;
+
+            var r = shade + shadeOffset;
+            var g = shade + shadeOffset;
+            var b = shade + shadeOffset;
 	        var a = 255;
 
-			//if(minDist <1){r=255;}
-            if (x > (0.5 * canvas.width - 0.5 * centerBlockWidth) && x < (0.5 * canvas.width + 0.5 * centerBlockWidth)) { r += 90; g += 40; b += 40; }
+            //if(minDist <1){r=255;}
+            if (x > (0.5 * canvasWidth - 0.5 * canvasCenterBlockWidth) && x < (0.5 * canvasWidth + 0.5 * canvasCenterBlockWidth)) { r += .30; g += .30; b += .30; }
 
-			r = Math.round(r / pixelShadeStepDistance) * pixelShadeStepDistance;
-            g = Math.round(g / pixelShadeStepDistance) * pixelShadeStepDistance;
-            b = Math.round(b / pixelShadeStepDistance) * pixelShadeStepDistance;
+            r = Math.round(r / canvasPixelShadeStepDistance) * canvasPixelShadeStepDistance + shadeOffset;
+            g = Math.round(g / canvasPixelShadeStepDistance) * canvasPixelShadeStepDistance + shadeOffset;
+            b = Math.round(b / canvasPixelShadeStepDistance) * canvasPixelShadeStepDistance + shadeOffset;
 
-	        const index = (y * width + x) * 4;
+            const index = (y * canvasWidth + x) * 4;
 	        data[index]     = r;
 	        data[index + 1] = g; 
 	        data[index + 2] = b; 
@@ -298,10 +315,10 @@ async function run() {
 
 	function moveVoronoi(speed)
     {
-    	const getRand = mulberry32(1);
+        const getRand = mulberry32(thisRandomSeed);
     	for (let i = 0; i < points.length; i++){
-            points[i][0] = ((((getRand() * 2 - 1) * frameDelta * speed + points[i][0]) + (width + 3 * pxVoronoiOverflow)) % (width + 2 * pxVoronoiOverflow)) - pxVoronoiOverflow;
-            points[i][1] = ((((getRand() * 2 - 1) * frameDelta * speed + points[i][1]) + (height + 3 * pxVoronoiOverflow)) % (height + 2 * pxVoronoiOverflow)) - pxVoronoiOverflow;
+            points[i][0] = ((((getRand() * 2 - 1) * frameDelta * speed + points[i][0]) + (canvasWidth + 3 * VoronoiPXOverflow)) % (canvasWidth + 2 * VoronoiPXOverflow)) - VoronoiPXOverflow;
+            points[i][1] = ((((getRand() * 2 - 1) * frameDelta * speed + points[i][1]) + (canvasHeight + 3 * VoronoiPXOverflow)) % (canvasHeight + 2 * VoronoiPXOverflow)) - VoronoiPXOverflow;
       	}
     }
 
