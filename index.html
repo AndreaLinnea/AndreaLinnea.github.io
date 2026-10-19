@@ -11,16 +11,16 @@
 <body>
 
 
-<div class = "horizontalElement">
+<div class = "horizontalElement"style = "border: 10px solid black">
 	<img src = "Assets/Images/header.jpg"  style = "scale:500%;object-fit: cover;margin: 10% 25% 10% 0%;filter: grayscale(0%);">
 </div>
 
 
 <div class = "horizontalElement" style = "border: 10px outset rgb(75,75,75)">
-	<h1 style = "margin: 7% 0%;font-size: 4.8vw;-webkit-text-stroke: 2px black; color: rgb(255,75,75)">
+	<h1 style = "margin: 7% 0%;font-size: 3.8vw;-webkit-text-stroke: 2px black; color: rgb(255,75,75)">
 		Andrea Linnea
 	</h1>
-	<p style = "margin: 10% 0%;font-size: 2.05vw;position: absolute;">
+	<p style = "margin: 10% 0%;font-size: 1.8vw;position: absolute;">
 		Game Design, Game Programming, Web Development, More
 	</p>
 </div>
@@ -148,7 +148,7 @@ position: absolute;
   justify-content: 
   center;overflow: hidden; 
   aspect-ratio: 4 / 1;
-    margin: 2% 20%;
+    margin: 5.1% 20%;
 }
 
 .Bio {
@@ -295,7 +295,9 @@ position: absolute;
 	        var a = 255;
 
             //if(minDist <1){r=255;}
-            if (x > (0.5 * canvasWidth - 0.5 * canvasCenterBlockWidth) && x < (0.5 * canvasWidth + 0.5 * canvasCenterBlockWidth)) { r += .30; g += .30; b += .30; }
+            if (x > (0.5 * canvasWidth - 0.5 * canvasCenterBlockWidth) && x < (0.5 * canvasWidth + 0.5 * canvasCenterBlockWidth)) { r += 200; g += 200; b += 200; }
+
+           // if (x > (0.5 * canvasWidth - 0.5 * canvasCenterBlockWidth) && x < (0.5 * canvasWidth + 0.5 * canvasCenterBlockWidth)) { r = 220; g = 220; b = 220; }
 
             r = Math.round(r / canvasPixelShadeStepDistance) * canvasPixelShadeStepDistance + shadeOffset;
             g = Math.round(g / canvasPixelShadeStepDistance) * canvasPixelShadeStepDistance + shadeOffset;
